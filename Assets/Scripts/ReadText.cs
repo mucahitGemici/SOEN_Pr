@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
 
 public class ReadText : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class ReadText : MonoBehaviour
     private float minSDF;
 
     private float movementSpeed;
+    public Slider speedSlider;
     private float maxSpeed = 3f;
 
     private void Start()
@@ -26,7 +28,8 @@ public class ReadText : MonoBehaviour
         ReadPositionText();
         ReadSDFText();
 
-
+        speedSlider.minValue = 0;
+        speedSlider.maxValue = maxSpeed;
         
     }
 
@@ -42,6 +45,9 @@ public class ReadText : MonoBehaviour
 
         movementSpeed = Mathf.Lerp(0, maxSpeed, normalizedSDF());
         Debug.Log($"movementSpeed: {movementSpeed}");
+
+        screenText.text = $"SDF = {currentSDF}";
+        speedSlider.value = movementSpeed;
 
     }
 
@@ -90,7 +96,6 @@ public class ReadText : MonoBehaviour
         //Vector3 cPos = new Vector3(-2, -1.8f, -0.9f);
         int idx = System.Array.IndexOf(posArray, cPos);
         currentSDF = sdfArray[idx];
-        screenText.text = $"SDF = {currentSDF}";
         //Debug.Log(sdfArray[idx]);
 
         normalizedSDF();
@@ -137,5 +142,22 @@ public class ReadText : MonoBehaviour
         float result = (currentSDF) / (maxSDF-minSDF);
         Debug.Log($"normalizedSDF: {result}");
         return result;
+    }
+
+    public void UP()
+    {
+        if(transform.position.y + 0.1f <= 1.9f)
+        {
+            transform.position += Vector3.up * 0.1f;
+        }
+        
+    }
+
+    public void DOWN()
+    {
+        if (transform.position.y - 0.1f >= -1.9f)
+        {
+            transform.position += Vector3.down * 0.1f;
+        }
     }
 }

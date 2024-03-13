@@ -23,6 +23,8 @@ public class ReadText : MonoBehaviour
     public Slider speedSlider;
     private float maxSpeed = 3f;
 
+    public Toggle sdfToggle;
+    private bool isSdfEnabled;
     private void Start()
     {
         ReadPositionText();
@@ -30,7 +32,7 @@ public class ReadText : MonoBehaviour
 
         speedSlider.minValue = 0;
         speedSlider.maxValue = maxSpeed;
-        
+
     }
 
     private void Update()
@@ -43,10 +45,18 @@ public class ReadText : MonoBehaviour
         Movement();
         PrintCurrentSDF();
 
-        movementSpeed = Mathf.Lerp(0, maxSpeed, normalizedSDF());
-        Debug.Log($"movementSpeed: {movementSpeed}");
+        if (isSdfEnabled)
+        {
+            movementSpeed = Mathf.Lerp(0, maxSpeed, normalizedSDF());
+            screenText.text = $"SDF = {currentSDF}";
+        }
+        else
+        {
+            movementSpeed = maxSpeed;
+        }
+        
+        //Debug.Log($"movementSpeed: {movementSpeed}");
 
-        screenText.text = $"SDF = {currentSDF}";
         speedSlider.value = movementSpeed;
 
     }
@@ -139,8 +149,8 @@ public class ReadText : MonoBehaviour
 
     private float normalizedSDF()
     {
-        float result = (currentSDF) / (maxSDF-minSDF);
-        Debug.Log($"normalizedSDF: {result}");
+        float result = (currentSDF) / (maxSDF-minSDF-0.4f);
+        //Debug.Log($"normalizedSDF: {result}");
         return result;
     }
 
@@ -158,6 +168,15 @@ public class ReadText : MonoBehaviour
         if (transform.position.y - 0.1f >= -1.9f)
         {
             transform.position += Vector3.down * 0.1f;
+        }
+    }
+
+    public void OnToggleStateChange()
+    {
+        if (sdfToggle.isOn) isSdfEnabled = true;
+        else
+        {
+            isSdfEnabled = false;
         }
     }
 }

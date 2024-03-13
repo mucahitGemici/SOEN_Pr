@@ -8,8 +8,8 @@ public class ReadText : MonoBehaviour
 {
     public TextAsset positionFile;
     public TextAsset sdfFile;
-    public Vector3[] posArray = new Vector3[68921];
-    private float[] sdfArray = new float[68921];
+    public Vector3[] posArray = new Vector3[226981];
+    private float[] sdfArray = new float[226981];
     public Transform objectReference;
     public TMPro.TMP_Text screenText;
 
@@ -133,7 +133,7 @@ public class ReadText : MonoBehaviour
         if (toLeft)
         {
             newPos = transform.position + new Vector3(0,0,1) * Time.deltaTime * movementSpeed;
-            if(newPos.z >= 1.99f)
+            if(newPos.z >= 2.99f)
             {
                 toLeft = false;
                 return;
@@ -143,7 +143,7 @@ public class ReadText : MonoBehaviour
         else
         {
             newPos = transform.position - new Vector3(0, 0, 1) * Time.deltaTime * movementSpeed;
-            if (newPos.z <= -1.99f)
+            if (newPos.z <= -2.99f)
             {
                 toLeft = true;
                 return;
@@ -154,7 +154,7 @@ public class ReadText : MonoBehaviour
 
     private float normalizedSDF()
     {
-        float result = (currentSDF) / (maxSDF-minSDF-0.4f);
+        float result = (currentSDF) / (maxSDF/3-minSDF);
         //Debug.Log($"normalizedSDF: {result}");
         return result;
     }

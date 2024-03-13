@@ -43,10 +43,10 @@ public class ReadText : MonoBehaviour
         }
 
         Movement();
-        PrintCurrentSDF();
 
         if (isSdfEnabled)
         {
+            PrintCurrentSDF();
             movementSpeed = Mathf.Lerp(0, maxSpeed, normalizedSDF());
             screenText.text = $"SDF = {currentSDF}";
         }
@@ -73,6 +73,11 @@ public class ReadText : MonoBehaviour
             
 
             Vector3 pos = new Vector3(float.Parse(stringX), float.Parse(stringY), float.Parse(stringZ));
+            RuntimePlatform platform = Application.platform;
+            if(platform == RuntimePlatform.WindowsEditor || platform == RuntimePlatform.WindowsPlayer)
+            {
+                pos /= 100;
+            }
             //Debug.Log(pos);
             posArray[i/3] = pos;
         }

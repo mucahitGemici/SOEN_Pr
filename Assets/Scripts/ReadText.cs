@@ -154,7 +154,7 @@ public class ReadText : MonoBehaviour
 
     private float normalizedSDF()
     {
-        float result = (currentSDF) / (maxSDF/3-minSDF);
+        float result = (currentSDF) / (maxSDF/4);
         //Debug.Log($"normalizedSDF: {result}");
         return result;
     }

@@ -122,7 +122,11 @@ public class ReadText : MonoBehaviour
         float x = Mathf.Round(pos.x * 10f) / 10f;
         float y = Mathf.Round(pos.y * 10f) / 10f;
         float z = Mathf.Round(pos.z * 10f) / 10f;
+        x = Mathf.Clamp(x, -3, 3);
+        y = Mathf.Clamp(y, -3, 3);
+        z = Mathf.Clamp(z, -3, 3);
         pos = new Vector3(x, y, z);
+   
         //Debug.Log(pos);
         return pos;
     }

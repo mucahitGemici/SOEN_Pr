@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class ReadText : MonoBehaviour
 {
+    public XROffsetGrabInteractable xrOffsetGrabInteractable;
     public TextAsset positionFile;
     public TextAsset sdfFile;
     public Vector3[] posArray = new Vector3[226981];
     private float[] sdfArray = new float[226981];
-    public Transform objectReference;
     public TMPro.TMP_Text screenText;
 
     private bool toLeft = true;
@@ -42,10 +42,11 @@ public class ReadText : MonoBehaviour
             PrintCurrentSDF();
         }
 
-        Movement();
+        //Movement();
 
-        if (isSdfEnabled)
+        if (sdfToggle.isOn)
         {
+            Debug.Log("sdf is enabled");
             PrintCurrentSDF();
             movementSpeed = Mathf.Lerp(0, maxSpeed, normalizedSDF());
             screenText.text = $"SDF = {currentSDF}";
@@ -158,8 +159,9 @@ public class ReadText : MonoBehaviour
 
     private float normalizedSDF()
     {
-        float result = (currentSDF) / (maxSDF/4);
-        //Debug.Log($"normalizedSDF: {result}");
+        float result = (currentSDF) / (maxSDF / 4);
+        Debug.Log($"normalizedSDF: {result}");
+        xrOffsetGrabInteractable.desiredVelocity = result;
         return result;
     }
 

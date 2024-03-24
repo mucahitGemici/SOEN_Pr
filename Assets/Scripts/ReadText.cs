@@ -6,14 +6,16 @@ using UnityEngine.UI;
 
 public class ReadText : MonoBehaviour
 {
+    public enum ObjectType
+    {
+        Box,
+        Ring
+    }
+    public ObjectType objectType;
+    [SerializeField] private DataManager dataManager;
+    [SerializeField] private VertexPositions vertexPositions;
     public XROffsetGrabInteractable xrOffsetGrabInteractable;
-    public TextAsset positionFile;
-    public TextAsset sdfFile;
-    public Vector3[] posArray = new Vector3[226981];
-    private float[] sdfArray = new float[226981];
     public TMPro.TMP_Text screenText;
-
-    private bool toLeft = true;
 
     private float currentSDF;
     private float maxSDF;
@@ -24,29 +26,26 @@ public class ReadText : MonoBehaviour
     private float maxSpeed = 3f;
 
     public Toggle sdfToggle;
-    private bool isSdfEnabled;
     private void Start()
     {
-        ReadPositionText();
-        ReadSDFText();
 
         speedSlider.minValue = 0;
         speedSlider.maxValue = maxSpeed;
+
+        dataManager.ReadData();
+        if (dataManager.IsDataReaded == false)
+        {
+            dataManager.ReadData();
+        }
 
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            PrintCurrentSDF();
-        }
 
-        //Movement();
-
-        if (sdfToggle.isOn)
+        if (sdfToggle.isOn && dataManager.IsDataReaded)
         {
-            Debug.Log("sdf is enabled");
+            //Debug.Log("sdf is enabled");
             PrintCurrentSDF();
             movementSpeed = Mathf.Lerp(0, maxSpeed, normalizedSDF());
             screenText.text = $"SDF = {currentSDF}";
@@ -56,138 +55,90 @@ public class ReadText : MonoBehaviour
             movementSpeed = maxSpeed;
         }
         
-        //Debug.Log($"movementSpeed: {movementSpeed}");
 
         speedSlider.value = movementSpeed;
 
     }
 
-    private void ReadPositionText()
-    {
-        string[] dataLines = positionFile.text.Split(',');
-        
-        for(int i = 0; i <= dataLines.Length - 3; i += 3) 
-        {
-            string stringX = dataLines[i];
-            string stringY = dataLines[i + 1];
-            string stringZ = dataLines[i + 2];
-            
-
-            Vector3 pos = new Vector3(float.Parse(stringX), float.Parse(stringY), float.Parse(stringZ));
-            RuntimePlatform platform = Application.platform;
-            if(platform == RuntimePlatform.WindowsEditor || platform == RuntimePlatform.WindowsPlayer)
-            {
-                pos /= 100;
-            }
-            //Debug.Log(pos);
-            posArray[i/3] = pos;
-        }
-        //Debug.Log(posArray[1]);
-
-
-        //Debug.Log(posArray[posArray.Length - 1]);
-    }
-
-    private void ReadSDFText()
-    {
-        string[] dataLines = sdfFile.text.Split(",");
-
-        for(int i = 0;i < dataLines.Length - 1; i++)
-        {
-            float val = float.Parse(dataLines[i]);
-            sdfArray[i] = val;
-        }
-
-        maxSDF = sdfArray.Max();
-        Debug.Log($"maxSDF: {maxSDF}");
-        minSDF = sdfArray.Min();
-        Debug.Log($"minSDF: {minSDF}");
-        //Debug.Log(sdfArray.Length);
-        //Debug.Log(sdfArray[sdfArray.Length-1]);
-    }
-
     private void PrintCurrentSDF()
     {
-        Vector3 cPos = GetPosition();
-        //Vector3 cPos = new Vector3(-2, -1.8f, -0.9f);
-        int idx = System.Array.IndexOf(posArray, cPos);
-        currentSDF = sdfArray[idx];
-        //Debug.Log(sdfArray[idx]);
+        Vector3 cPos = Vector3.zero;
+        if(objectType == ObjectType.Box)
+        {
+            cPos = ConvertPosition(transform.position);
+            int idx = System.Array.IndexOf(dataManager.torusPositionArray, cPos);
+            currentSDF = dataManager.torusSDFArray[idx];
+            maxSDF = dataManager.maxSDFTorus;
+            Debug.Log($"sdf: {currentSDF}");
+        }
+        else
+        {
+            //currentSDF = CalculateSdfWithVertexData();
+            currentSDF = CalculateSDFWithReducedVertexData();
+            maxSDF = dataManager.maxSDFWire;
+            Debug.Log($"sdf: {currentSDF}");
+        }
 
         normalizedSDF();
     }
 
-    private Vector3 GetPosition()
+    /*
+    private float CalculateSdfWithVertexData()
     {
-        Vector3 pos = transform.position;
-        float x = Mathf.Round(pos.x * 10f) / 10f;
-        float y = Mathf.Round(pos.y * 10f) / 10f;
-        float z = Mathf.Round(pos.z * 10f) / 10f;
-        x = Mathf.Clamp(x, -3, 3);
-        y = Mathf.Clamp(y, -3, 3);
-        z = Mathf.Clamp(z, -3, 3);
-        pos = new Vector3(x, y, z);
-   
-        //Debug.Log(pos);
-        return pos;
+
+        float minSDF = Mathf.Infinity;
+        int minIndex = 999999;
+        foreach (Vector3 vertexPos in vertexPositions.verticesWorldPositions)
+        {
+            int index = System.Array.IndexOf(posArray, ConvertPosition(vertexPos));
+            if (sdfArray[index] < minSDF)
+            {
+                minSDF = sdfArray[index];
+                minIndex = index;
+            }
+        }
+        return sdfArray[minIndex];
+    }
+    */
+
+    private float CalculateSDFWithReducedVertexData()
+    {
+        float minSDF = Mathf.Infinity;
+        int minIndex = 999999;
+        foreach(Transform vertexTransform in vertexPositions.reducedNumVertexTransforms)
+        {
+            int curIdx = System.Array.IndexOf(dataManager.wirePositionArray, ConvertPosition(vertexTransform.position));
+            float sdf = dataManager.wireSDFArray[curIdx];
+            //Debug.Log(sdf);
+            if(sdf < minSDF)
+            {
+                minSDF = sdf;
+                minIndex = curIdx;
+            }
+        }
+        return dataManager.wireSDFArray[minIndex];
     }
 
-    private void Movement()
+    
+    private Vector3 ConvertPosition(Vector3 pos)
     {
-        Vector3 newPos = transform.position;
-        if (toLeft)
+        if(objectType == ObjectType.Box)
         {
-            newPos = transform.position + new Vector3(0,0,1) * Time.deltaTime * movementSpeed;
-            if(newPos.z >= 2.99f)
-            {
-                toLeft = false;
-                return;
-            }
-            transform.position = newPos;
+            return dataManager.ConvertPositionForTorus(pos);
         }
         else
         {
-            newPos = transform.position - new Vector3(0, 0, 1) * Time.deltaTime * movementSpeed;
-            if (newPos.z <= -2.99f)
-            {
-                toLeft = true;
-                return;
-            }
-            transform.position = newPos;
+            return dataManager.ConvertPositionForWire(pos);
         }
     }
-
+    
     private float normalizedSDF()
     {
-        float result = (currentSDF) / (maxSDF / 4);
-        Debug.Log($"normalizedSDF: {result}");
+        float result = Mathf.Abs((currentSDF) / (maxSDF / 4));
         xrOffsetGrabInteractable.desiredVelocity = result;
         return result;
     }
 
-    public void UP()
-    {
-        if(transform.position.y + 0.1f <= 1.9f)
-        {
-            transform.position += Vector3.up * 0.1f;
-        }
-        
-    }
 
-    public void DOWN()
-    {
-        if (transform.position.y - 0.1f >= -1.9f)
-        {
-            transform.position += Vector3.down * 0.1f;
-        }
-    }
 
-    public void OnToggleStateChange()
-    {
-        if (sdfToggle.isOn) isSdfEnabled = true;
-        else
-        {
-            isSdfEnabled = false;
-        }
-    }
 }

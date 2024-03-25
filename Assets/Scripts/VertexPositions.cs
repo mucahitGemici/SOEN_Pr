@@ -15,7 +15,7 @@ public class VertexPositions : MonoBehaviour
     private void Start()
     {
         verticesWorldPositions = mf.mesh.vertices;
-        Debug.Log(verticesWorldPositions.Length);
+        //Debug.Log(verticesWorldPositions.Length);
     }
 
     private void Update()

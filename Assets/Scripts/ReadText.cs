@@ -16,23 +16,24 @@ public class ReadText : MonoBehaviour
     [SerializeField] private VertexPositions vertexPositions;
     public XROffsetGrabInteractable xrOffsetGrabInteractable;
     public TMPro.TMP_Text screenText;
+    public TMPro.TMP_Text speedText;
 
     private float currentSDF;
     private float maxSDF;
     private float minSDF;
 
-    private float movementSpeed;
+    //private float movementSpeed;
     public Slider speedSlider;
-    private float maxSpeed = 3f;
+    private float maxSpeed = 1f;
+    private float minSpeed = 0.05f;
 
-    public Toggle sdfToggle;
+    private bool isSDFenabled = true;
     private void Start()
     {
 
         speedSlider.minValue = 0;
         speedSlider.maxValue = maxSpeed;
 
-        dataManager.ReadData();
         if (dataManager.IsDataReaded == false)
         {
             dataManager.ReadData();
@@ -43,20 +44,22 @@ public class ReadText : MonoBehaviour
     private void Update()
     {
 
-        if (sdfToggle.isOn && dataManager.IsDataReaded)
+        if (isSDFenabled == true && dataManager.IsDataReaded == true)
         {
             //Debug.Log("sdf is enabled");
             PrintCurrentSDF();
-            movementSpeed = Mathf.Lerp(0, maxSpeed, normalizedSDF());
+            //movementSpeed = Mathf.Lerp(0, maxSpeed, normalizedSDF());
+            //speedText.text = $"SPEED: {movementSpeed}";
+            //Debug.Log($"movementSpeed: {movementSpeed}");
             screenText.text = $"SDF = {currentSDF}";
         }
         else
         {
-            movementSpeed = maxSpeed;
+            //movementSpeed = maxSpeed;
+            setSpeed(maxSpeed);
+            screenText.text = $"SDF Disabled";
         }
-        
-
-        speedSlider.value = movementSpeed;
+       
 
     }
 
@@ -69,14 +72,14 @@ public class ReadText : MonoBehaviour
             int idx = System.Array.IndexOf(dataManager.torusPositionArray, cPos);
             currentSDF = dataManager.torusSDFArray[idx];
             maxSDF = dataManager.maxSDFTorus;
-            Debug.Log($"sdf: {currentSDF}");
+            //Debug.Log($"sdf: {currentSDF}");
         }
         else
         {
             //currentSDF = CalculateSdfWithVertexData();
             currentSDF = CalculateSDFWithReducedVertexData();
             maxSDF = dataManager.maxSDFWire;
-            Debug.Log($"sdf: {currentSDF}");
+            //Debug.Log($"sdf: {currentSDF}");
         }
 
         normalizedSDF();
@@ -135,8 +138,17 @@ public class ReadText : MonoBehaviour
     private float normalizedSDF()
     {
         float result = Mathf.Abs((currentSDF) / (maxSDF / 4));
-        xrOffsetGrabInteractable.desiredVelocity = result;
+        //xrOffsetGrabInteractable.desiredVelocity = result;
+        float speed = Mathf.Lerp(minSpeed, maxSpeed, result);
+        setSpeed(speed);
         return result;
+    }
+
+    private void setSpeed(float speed)
+    {
+        xrOffsetGrabInteractable.desiredVelocity = speed;
+        speedSlider.value = speed;
+        speedText.text = $"SPEED: {speed}";
     }
 
 

@@ -8,6 +8,8 @@ public class XROffsetGrabInteractable : XRGrabInteractable
     private Quaternion initialLocalRot;
 
     public float desiredVelocity;
+
+    public bool isRing;
     private void Start()
     {
         if (!attachTransform)
@@ -43,6 +45,7 @@ public class XROffsetGrabInteractable : XRGrabInteractable
             attachTransform.rotation = initialLocalRot;
         }
         */
+
         attachTransform.position = args.interactorObject.transform.position;
         attachTransform.rotation = args.interactorObject.transform.rotation;
         base.OnSelectEntered(args);

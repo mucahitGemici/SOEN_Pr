@@ -11,8 +11,10 @@ public class XROffsetGrabInteractable : XRGrabInteractable
 
     public bool isRing;
 
-    public LineRenderer lr_left;
-    public LineRenderer lr_right;
+    public XRInteractorLineVisual lr_left;
+    public XRInteractorLineVisual lr_right;
+    public XRInteractorLineVisual lr_left_teleport;
+    public XRInteractorLineVisual lr_right_teleport;
     public MeshRenderer meshRenderer;
     public Color highlightedColor;
     private Color normalColor;
@@ -80,6 +82,8 @@ public class XROffsetGrabInteractable : XRGrabInteractable
         meshRenderer.material.color = highlightedColor;
         lr_left.enabled = false;
         lr_right.enabled = false;
+        lr_left_teleport.enabled = false;
+        lr_right_teleport.enabled = false;
     }
 
     private void DeHighlightObject()
@@ -87,5 +91,7 @@ public class XROffsetGrabInteractable : XRGrabInteractable
         meshRenderer.material.color = normalColor;
         lr_left.enabled = true;
         lr_right.enabled = true;
+        lr_left_teleport.enabled = true;
+        lr_right_teleport.enabled = true;
     }
 }

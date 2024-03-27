@@ -395,6 +395,12 @@ MonoBehaviour:
   m_AttachPointCompatibilityMode: 0
   desiredVelocity: 0
   isRing: 0
+  lr_left: {fileID: 0}
+  lr_right: {fileID: 0}
+  lr_left_teleport: {fileID: 0}
+  lr_right_teleport: {fileID: 0}
+  meshRenderer: {fileID: 0}
+  highlightedColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!54 &187766142
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2758,8 +2764,8 @@ Transform:
   m_GameObject: {fileID: 709959788}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -0.25}
+  m_LocalScale: {x: 0.34, y: 0.79, z: 0.34}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 838161424}
@@ -3154,7 +3160,7 @@ Transform:
   m_GameObject: {fileID: 838161422}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -3, y: -0.6, z: 0}
+  m_LocalPosition: {x: -3, y: -1.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5526,7 +5532,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 99965282c2360402ba90701094560f71, type: 2}
+  - {fileID: 2100000, guid: 4873488d0efa23744a8acc156578677b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5743,6 +5749,12 @@ MonoBehaviour:
   m_AttachPointCompatibilityMode: 0
   desiredVelocity: 1
   isRing: 0
+  lr_left: {fileID: 489229353}
+  lr_right: {fileID: 1566324143}
+  lr_left_teleport: {fileID: 608289354}
+  lr_right_teleport: {fileID: 1685455484}
+  meshRenderer: {fileID: 2123282602}
+  highlightedColor: {r: 1, g: 0.7490196, b: 0, a: 0.77254903}
 --- !u!114 &2123282608
 MonoBehaviour:
   m_ObjectHideFlags: 0

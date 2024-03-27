@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028425, g: 0.2257151, b: 0.30692458, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028373, g: 0.22571428, b: 0.3069235, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2800,6 +2800,10 @@ MonoBehaviour:
   m_AttachPointCompatibilityMode: 0
   desiredVelocity: 1
   isRing: 1
+  lr_left: {fileID: 489229354}
+  lr_right: {fileID: 1566324144}
+  meshRenderer: {fileID: 2128115267}
+  highlightedColor: {r: 0.74191564, g: 1, b: 0.09803921, a: 0.7254902}
 --- !u!114 &615452868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7398,6 +7402,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 615452867}
   m_SourcePrefab: {fileID: 100100000, guid: a42da76805c13430991c3829ddb0fdeb, type: 3}
+--- !u!23 &2128115267 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: a42da76805c13430991c3829ddb0fdeb,
+    type: 3}
+  m_PrefabInstance: {fileID: 2128115266}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1154339380223340172
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -27,6 +27,9 @@ public class ReadText : MonoBehaviour
     private float maxSpeed = 1f;
     private float minSpeed = 0.05f;
 
+    Vector3 lastConvertedVertexPos;
+    Vector3 minPos;
+
     private bool isSDFenabled = true;
     private void Start()
     {
@@ -34,6 +37,7 @@ public class ReadText : MonoBehaviour
         speedSlider.minValue = 0;
         speedSlider.maxValue = maxSpeed;
 
+        dataManager.ReadData();
         if (dataManager.IsDataReaded == false)
         {
             dataManager.ReadData();
@@ -108,18 +112,30 @@ public class ReadText : MonoBehaviour
     {
         float minSDF = Mathf.Infinity;
         int minIndex = 999999;
+        minPos = Vector3.one * 999999;
         foreach(Transform vertexTransform in vertexPositions.reducedNumVertexTransforms)
         {
-            int curIdx = System.Array.IndexOf(dataManager.wirePositionArray, ConvertPosition(vertexTransform.position));
+            Vector3 convertedPos = ConvertPosition(vertexTransform.position);
+            int curIdx = System.Array.IndexOf(dataManager.wirePositionArray, convertedPos);
             float sdf = dataManager.wireSDFArray[curIdx];
             //Debug.Log(sdf);
             if(sdf < minSDF)
             {
                 minSDF = sdf;
                 minIndex = curIdx;
+                minPos = vertexTransform.position;
+                lastConvertedVertexPos = convertedPos;
             }
         }
-        return dataManager.wireSDFArray[minIndex];
+
+        if(minPos.x < -0.1f || minPos.x > 0.1f || minPos.y > 0.4f || minPos.y < -0.4f || minPos.z < -1f || minPos.z > 1f)
+        {
+            return 99;
+        }
+        else
+        {
+            return dataManager.wireSDFArray[minIndex];
+        }
     }
 
     
@@ -134,10 +150,18 @@ public class ReadText : MonoBehaviour
             return dataManager.ConvertPositionForWire(pos);
         }
     }
+
     
     private float normalizedSDF()
     {
-        float result = Mathf.Abs((currentSDF) / (maxSDF / 4));
+        if(currentSDF == 99)
+        {
+            float distane = Vector3.Distance(lastConvertedVertexPos, minPos);
+            float cSpeed = Mathf.Lerp(0.5f, maxSpeed, distane);
+            setSpeed(cSpeed);
+            return currentSDF;
+        }
+        float result = Mathf.Abs((currentSDF) / (maxSDF/4f));
         //xrOffsetGrabInteractable.desiredVelocity = result;
         float speed = Mathf.Lerp(minSpeed, maxSpeed, result);
         setSpeed(speed);

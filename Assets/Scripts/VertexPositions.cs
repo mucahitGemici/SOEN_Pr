@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VertexPositions : MonoBehaviour
 {
-    [SerializeField] MeshFilter mf;
+    //[SerializeField] MeshFilter mf;
     public Vector3[] verticesWorldPositions;
 
     public Transform[] reducedNumVertexTransforms;
@@ -14,7 +14,7 @@ public class VertexPositions : MonoBehaviour
 
     private void Start()
     {
-        verticesWorldPositions = mf.mesh.vertices;
+        //verticesWorldPositions = mf.mesh.vertices;
         //Debug.Log(verticesWorldPositions.Length);
     }
 
@@ -22,7 +22,7 @@ public class VertexPositions : MonoBehaviour
     {
         if (updateRealVertexPositions)
         {
-            transform.TransformPoints(mf.mesh.vertices, verticesWorldPositions);
+            //transform.TransformPoints(mf.mesh.vertices, verticesWorldPositions);
         }
     }
 

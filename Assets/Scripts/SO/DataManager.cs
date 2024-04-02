@@ -11,10 +11,13 @@ public class DataManager : ScriptableObject
     [SerializeField] private TextAsset torusPositionText;
     [SerializeField] private TextAsset torusSDFText;
 
-    [HideInInspector] public Vector3[] wirePositionArray = new Vector3[450241];
+    //[HideInInspector] public Vector3[] wirePositionArray = new Vector3[450241];
+    [HideInInspector] public Vector3[] wirePositionArray = new Vector3[341901];
     [HideInInspector] public Vector3[] torusPositionArray = new Vector3[226981];
 
-    [HideInInspector] public float[] wireSDFArray = new float[450241];
+
+    //[HideInInspector] public float[] wireSDFArray = new float[450241];
+    [HideInInspector] public float[] wireSDFArray = new float[341901];
     [HideInInspector] public float[] torusSDFArray = new float[226981];
 
     [HideInInspector] public float minSDFTorus;
@@ -120,14 +123,15 @@ public class DataManager : ScriptableObject
 
     public Vector3 ConvertPositionForWire(Vector3 pos)
     {
-        float x = Mathf.Round(pos.x * 10f) / 10f;
-        float y = Mathf.Round(pos.y * 10f) / 10f;
-        float z = Mathf.Round(pos.z * 10f) / 10f;
-        x = Mathf.Clamp(x, -3, 3);
-        y = Mathf.Clamp(y, -3, 3);
-        z = Mathf.Clamp(z, -6, 6);
+        float x = Mathf.Round(pos.x * 100f) / 100f;
+        float y = Mathf.Round(pos.y * 100f) / 100f;
+        float z = Mathf.Round(pos.z * 100f) / 100f;
+        x = Mathf.Clamp(x, -0.1f, 0.1f);
+        y = Mathf.Clamp(y, -0.4f, 0.4f);
+        z = Mathf.Clamp(z, -1f, 1f);
         return new Vector3(x, y, z);
     }
+
 
     public Vector3 ConvertPositionForTorus(Vector3 pos)
     {

@@ -7,7 +7,25 @@ public class Wire : MonoBehaviour
 {
     public TMP_Text hitText;
     private int hitNum;
+    public int GetHitNumber
+    {
+        get { return hitNum; }
+    }
+
     public AudioSource beepSource;
+    public PlacingObject placing;
+    public AudioSource successSource;
+
+    private void Awake()
+    {
+        placing.OnPlacingEnded += OnPlacingEnded;
+    }
+
+    private void OnPlacingEnded(float positionDifference, float angle)
+    {
+        successSource.Play();
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.layer == 6)

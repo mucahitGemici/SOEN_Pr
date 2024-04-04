@@ -8,8 +8,8 @@ public class ReadText : MonoBehaviour
 {
     public enum ObjectType
     {
-        Box,
-        Ring
+        TorusSceneObject,
+        ComplexWireSceneObject
     }
     public ObjectType objectType;
     [SerializeField] private DataManager dataManager;
@@ -70,6 +70,7 @@ public class ReadText : MonoBehaviour
     private void PrintCurrentSDF()
     {
         Vector3 cPos = Vector3.zero;
+        /*
         if(objectType == ObjectType.Box)
         {
             cPos = ConvertPosition(transform.position);
@@ -84,6 +85,18 @@ public class ReadText : MonoBehaviour
             currentSDF = CalculateSDFWithReducedVertexData();
             maxSDF = dataManager.maxSDFWire;
             //Debug.Log($"sdf: {currentSDF}");
+        }
+        */
+
+        if(objectType == ObjectType.TorusSceneObject)
+        {
+            currentSDF = CalculateSDFWithReducedVertexDataTorus();
+            maxSDF = dataManager.maxSDFTorus;
+        }
+        else if(objectType == ObjectType.ComplexWireSceneObject)
+        {
+            currentSDF = CalculateSDFWithReducedVertexDataComplexWire();
+            maxSDF = dataManager.maxSDFWire;
         }
 
         normalizedSDF();
@@ -108,7 +121,7 @@ public class ReadText : MonoBehaviour
     }
     */
 
-    private float CalculateSDFWithReducedVertexData()
+    private float CalculateSDFWithReducedVertexDataComplexWire()
     {
         float minSDF = Mathf.Infinity;
         int minIndex = 999999;
@@ -138,12 +151,45 @@ public class ReadText : MonoBehaviour
         }
     }
 
-    
+    private float CalculateSDFWithReducedVertexDataTorus()
+    {
+        float minSDF = Mathf.Infinity;
+        int minIndex = 999999;
+        minPos = Vector3.one * 999999;
+        foreach (Transform vertexTransform in vertexPositions.reducedNumVertexTransforms)
+        {
+            Vector3 convertedPos = ConvertPosition(vertexTransform.position);
+            int curIdx = System.Array.IndexOf(dataManager.torusPositionArray, convertedPos);
+            float sdf = dataManager.torusSDFArray[curIdx];
+            //Debug.Log(sdf);
+            if (sdf < minSDF)
+            {
+                minSDF = sdf;
+                minIndex = curIdx;
+                minPos = vertexTransform.position;
+                lastConvertedVertexPos = convertedPos;
+            }
+        }
+
+        if (minPos.x < -0.25f || minPos.x > 0.25f || minPos.y > 0.4f || minPos.y < -0.4f || minPos.z < -0.8f || minPos.z > 0.8f)
+        {
+            return 99;
+        }
+        else
+        {
+            return dataManager.torusSDFArray[minIndex];
+        }
+    }
+
     private Vector3 ConvertPosition(Vector3 pos)
     {
-        if(objectType == ObjectType.Box)
+        if(objectType == ObjectType.TorusSceneObject)
         {
             return dataManager.ConvertPositionForTorus(pos);
+        }
+        else if(objectType == ObjectType.ComplexWireSceneObject)
+        {
+            return dataManager.ConvertPositionForWire(pos);
         }
         else
         {
@@ -156,12 +202,31 @@ public class ReadText : MonoBehaviour
     {
         if(currentSDF == 99)
         {
-            float distane = Vector3.Distance(lastConvertedVertexPos, minPos);
-            float cSpeed = Mathf.Lerp(0.5f, maxSpeed, distane);
-            setSpeed(cSpeed);
-            return currentSDF;
+            if(objectType == ObjectType.ComplexWireSceneObject)
+            {
+                float distane = Vector3.Distance(lastConvertedVertexPos, minPos);
+                float cSpeed = Mathf.Lerp(0.5f, maxSpeed, distane);
+                setSpeed(cSpeed);
+                return currentSDF;
+            }
+            else if(objectType == ObjectType.TorusSceneObject)
+            {
+                setSpeed(1);
+                return currentSDF;
+            }
         }
-        float result = Mathf.Abs((currentSDF) / (maxSDF/4f));
+
+        float divideMax = 4f;
+        if(objectType == ObjectType.ComplexWireSceneObject)
+        {
+            divideMax = 4f;
+        }
+        else if (objectType == ObjectType.TorusSceneObject)
+        {
+            divideMax = 3f;
+        }
+
+        float result = Mathf.Abs((currentSDF) / (maxSDF/ divideMax));
         //xrOffsetGrabInteractable.desiredVelocity = result;
         float speed = Mathf.Lerp(minSpeed, maxSpeed, result);
         setSpeed(speed);

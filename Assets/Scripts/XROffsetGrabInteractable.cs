@@ -18,7 +18,15 @@ public class XROffsetGrabInteractable : XRGrabInteractable
     public MeshRenderer[] meshRenderers;
     public Color highlightedColor;
     private Color normalColor;
-    private bool isHolding = false;
+    [HideInInspector] public bool isHolding = false;
+
+    private float taskTimer;
+    public float GetTaskTimer
+    {
+        get { return taskTimer; }
+    }
+    private bool startTimer;
+    public AudioSource timerStartSound;
 
 
     private void Start()
@@ -42,9 +50,9 @@ public class XROffsetGrabInteractable : XRGrabInteractable
     {
         velocityScale = desiredVelocity;
 
-        if (isHolding)
+        if (startTimer)
         {
-            
+            taskTimer += Time.deltaTime;
         }
     }
 
@@ -63,6 +71,11 @@ public class XROffsetGrabInteractable : XRGrabInteractable
         }
         */
 
+        if(startTimer == false)
+        {
+            startTimer = true;
+            timerStartSound.Play();
+        }
         attachTransform.position = args.interactorObject.transform.position;
         attachTransform.rotation = args.interactorObject.transform.rotation;
         isHolding = true;

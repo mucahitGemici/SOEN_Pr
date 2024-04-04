@@ -13,12 +13,12 @@ public class DataManager : ScriptableObject
 
     //[HideInInspector] public Vector3[] wirePositionArray = new Vector3[450241];
     [HideInInspector] public Vector3[] wirePositionArray = new Vector3[341901];
-    [HideInInspector] public Vector3[] torusPositionArray = new Vector3[226981];
+    [HideInInspector] public Vector3[] torusPositionArray = new Vector3[665091];
 
 
     //[HideInInspector] public float[] wireSDFArray = new float[450241];
     [HideInInspector] public float[] wireSDFArray = new float[341901];
-    [HideInInspector] public float[] torusSDFArray = new float[226981];
+    [HideInInspector] public float[] torusSDFArray = new float[665091];
 
     [HideInInspector] public float minSDFTorus;
     [HideInInspector] public float maxSDFTorus;
@@ -29,7 +29,7 @@ public class DataManager : ScriptableObject
     {
         get
         {
-            if (wirePositionArray[1].magnitude != 0)
+            if (wirePositionArray[1].magnitude != 0 && torusPositionArray[1].magnitude != 0)
             {
                 return true;
             }
@@ -42,6 +42,17 @@ public class DataManager : ScriptableObject
 
     public void ReadData()
     {
+        wirePositionArray = new Vector3[341901];
+        torusPositionArray = new Vector3[665091];
+
+        wireSDFArray = new float[341901];
+        torusSDFArray = new float[665091];
+
+        minSDFTorus = 0.0f;
+        maxSDFTorus = 0.0f;
+        minSDFWire = 0.0f;
+        maxSDFWire = 0.0f;
+
         ReadWirePositionData();
         ReadWireSDFData();
 
@@ -135,12 +146,12 @@ public class DataManager : ScriptableObject
 
     public Vector3 ConvertPositionForTorus(Vector3 pos)
     {
-        float x = Mathf.Round(pos.x * 10f) / 10f;
-        float y = Mathf.Round(pos.y * 10f) / 10f;
-        float z = Mathf.Round(pos.z * 10f) / 10f;
-        x = Mathf.Clamp(x, -3, 3);
-        y = Mathf.Clamp(y, -3, 3);
-        z = Mathf.Clamp(z, -3, 3);
+        float x = Mathf.Round(pos.x * 100f) / 100f;
+        float y = Mathf.Round(pos.y * 100f) / 100f;
+        float z = Mathf.Round(pos.z * 100f) / 100f;
+        x = Mathf.Clamp(x, -0.25f, 0.25f);
+        y = Mathf.Clamp(y, -0.4f, 0.4f);
+        z = Mathf.Clamp(z, -0.8f, 0.8f);
         return new Vector3(x, y, z);
     }
 }

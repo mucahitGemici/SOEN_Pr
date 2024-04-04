@@ -1,24 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
-public class Wire : MonoBehaviour
+public class Torus : MonoBehaviour
 {
     public TMP_Text hitText;
     private int hitNum;
     public AudioSource beepSource;
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.layer == 6)
+        if (collision.gameObject.layer == 6)
         {
             hitNum++;
             //Debug.Log(collision.collider.gameObject.name);
             //Debug.Log(collision.gameObject.name);
-            collision.gameObject.GetComponent<XROffsetGrabInteractable>().setHitColor(collision.collider.transform.parent.gameObject.GetComponent<MeshRenderer>());
+            //collision.gameObject.GetComponent<XROffsetGrabInteractable>().setHitColor(collision.collider.transform.parent.gameObject.GetComponent<MeshRenderer>());
             hitText.text = hitNum.ToString();
             beepSource.Play();
         }
     }
-
 }

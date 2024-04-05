@@ -8,22 +8,49 @@ public class DataManager : ScriptableObject
     [SerializeField] private TextAsset wirePositionText;
     [SerializeField] private TextAsset wireSDFText;
 
+    [SerializeField] private TextAsset easyWirePositionText;
+    [SerializeField] private TextAsset easyWireSDFText;
+
     [SerializeField] private TextAsset torusPositionText;
     [SerializeField] private TextAsset torusSDFText;
 
     //[HideInInspector] public Vector3[] wirePositionArray = new Vector3[450241];
     [HideInInspector] public Vector3[] wirePositionArray = new Vector3[341901];
     [HideInInspector] public Vector3[] torusPositionArray = new Vector3[665091];
+    private Vector3[] easyWirePositionArray = new Vector3[341901];
+
+    public Vector3[] EasyWirePositionArray
+    {
+        get { return wirePositionArray; }
+    }
 
 
     //[HideInInspector] public float[] wireSDFArray = new float[450241];
     [HideInInspector] public float[] wireSDFArray = new float[341901];
     [HideInInspector] public float[] torusSDFArray = new float[665091];
+    private float[] easyWireSDFArray = new float[341901];
+
+    public float[] EasyWireSDFArray
+    {
+        get { return easyWireSDFArray; }
+    }
 
     [HideInInspector] public float minSDFTorus;
     [HideInInspector] public float maxSDFTorus;
     [HideInInspector] public float minSDFWire;
     [HideInInspector] public float maxSDFWire;
+    private float maxSDFeasyWire;
+    private float minSDFeasyWire;
+
+    public float MaxSDFeasyWire
+    {
+        get { return maxSDFeasyWire; }
+    }
+
+    public float MinSDFeasyWire
+    {
+        get { return minSDFeasyWire; }
+    }
 
     public bool IsDataReaded
     {
@@ -44,20 +71,26 @@ public class DataManager : ScriptableObject
     {
         wirePositionArray = new Vector3[341901];
         torusPositionArray = new Vector3[665091];
+        easyWirePositionArray = new Vector3[341901];
 
         wireSDFArray = new float[341901];
         torusSDFArray = new float[665091];
+        easyWireSDFArray = new float[341901];
 
         minSDFTorus = 0.0f;
         maxSDFTorus = 0.0f;
         minSDFWire = 0.0f;
         maxSDFWire = 0.0f;
+        maxSDFeasyWire = 0.0f;
+        minSDFeasyWire = 0.0f;
 
         ReadWirePositionData();
         ReadWireSDFData();
+        ReadEasyWirePositionData();
 
         ReadTorusPositionData();
         ReadTorusSDFData();
+        ReadEasyWireSDFData();
     }
 
     private void ReadWirePositionData()
@@ -78,6 +111,27 @@ public class DataManager : ScriptableObject
                 pos /= 100;
             }
             wirePositionArray[i / 3] = pos;
+        }
+    }
+
+    private void ReadEasyWirePositionData()
+    {
+        string[] dataLines = easyWirePositionText.text.Split(',');
+
+        for (int i = 0; i <= dataLines.Length - 3; i += 3)
+        {
+            string stringX = dataLines[i];
+            string stringY = dataLines[i + 1];
+            string stringZ = dataLines[i + 2];
+
+
+            Vector3 pos = new Vector3(float.Parse(stringX), float.Parse(stringY), float.Parse(stringZ));
+            RuntimePlatform platform = Application.platform;
+            if (platform == RuntimePlatform.WindowsEditor || platform == RuntimePlatform.WindowsPlayer)
+            {
+                pos /= 100;
+            }
+            easyWirePositionArray[i / 3] = pos;
         }
     }
 
@@ -117,6 +171,21 @@ public class DataManager : ScriptableObject
         Debug.Log($"min sdf for wire: {minSDFWire}, max sdf for wire: {maxSDFWire}");
     }
 
+    private void ReadEasyWireSDFData()
+    {
+        string[] dataLines = easyWireSDFText.text.Split(",");
+
+        for (int i = 0; i < dataLines.Length - 1; i++)
+        {
+            float val = float.Parse(dataLines[i]);
+            easyWireSDFArray[i] = val;
+        }
+
+        minSDFeasyWire = Mathf.Min(easyWireSDFArray);
+        maxSDFeasyWire = Mathf.Max(easyWireSDFArray);
+        Debug.Log($"min sdf for easy wire: {minSDFeasyWire}, max sdf for easy wire: {maxSDFeasyWire}");
+    }
+
     private void ReadTorusSDFData()
     {
         string[] dataLines = torusSDFText.text.Split(",");
@@ -134,6 +203,7 @@ public class DataManager : ScriptableObject
 
     public Vector3 ConvertPositionForWire(Vector3 pos)
     {
+        // using same position array for both complex and easy wires
         float x = Mathf.Round(pos.x * 100f) / 100f;
         float y = Mathf.Round(pos.y * 100f) / 100f;
         float z = Mathf.Round(pos.z * 100f) / 100f;

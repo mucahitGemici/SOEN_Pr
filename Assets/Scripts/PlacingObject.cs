@@ -14,7 +14,8 @@ public class PlacingObject : MonoBehaviour
     public enum TaskType
     {
         Torus,
-        ComplexWire
+        ComplexWire,
+        EasyWire
     }
     public TaskType taskType;
     [SerializeField] private int participantNumber;
@@ -25,7 +26,7 @@ public class PlacingObject : MonoBehaviour
             Rigidbody rb = other.transform.parent.parent.GetComponent<Rigidbody>();
             rb.useGravity = false;
         }
-        else if(taskType == TaskType.ComplexWire)
+        else if(taskType == TaskType.ComplexWire || taskType == TaskType.EasyWire)
         {
             Rigidbody rb = other.transform.parent.parent.parent.GetComponent<Rigidbody>();
             rb.useGravity = false;
@@ -50,7 +51,7 @@ public class PlacingObject : MonoBehaviour
             {
                 RecordData(xrOffsetGrabInteractable.GetTaskTimer, torusRef.GetHitNumber, posDiff, angleDiff, finalPos, finalRot);
             }
-            else if(taskType == TaskType.ComplexWire)
+            else if(taskType == TaskType.ComplexWire || taskType == TaskType.EasyWire)
             {
                 RecordData(xrOffsetGrabInteractable.GetTaskTimer, wireRef.GetHitNumber, posDiff, angleDiff, finalPos, finalRot);
             }
@@ -71,6 +72,10 @@ public class PlacingObject : MonoBehaviour
         else if(taskType == TaskType.ComplexWire)
         {
             path = Application.dataPath + $"/Datas/ComplexWire/participant{participantNumber}.txt";
+        }
+        else if(taskType == TaskType.EasyWire)
+        {
+            path = Application.dataPath + $"/Datas/EasyWire/participant{participantNumber}.txt";
         }
 
         if(!File.Exists(path))

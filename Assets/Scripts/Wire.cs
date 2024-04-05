@@ -28,12 +28,13 @@ public class Wire : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.layer == 6)
+        if (collision.gameObject.layer == 6)
         {
             hitNum++;
             //Debug.Log(collision.collider.gameObject.name);
             //Debug.Log(collision.gameObject.name);
-            collision.gameObject.GetComponent<XROffsetGrabInteractable>().setHitColor(collision.collider.transform.parent.gameObject.GetComponent<MeshRenderer>());
+            MeshRenderer mr = collision.collider.transform.parent.GetComponentsInChildren<MeshRenderer>()[1];
+            collision.gameObject.GetComponent<XROffsetGrabInteractable>().setHitColor(mr);
             hitText.text = hitNum.ToString();
             beepSource.Play();
         }

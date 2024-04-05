@@ -9,7 +9,8 @@ public class ReadText : MonoBehaviour
     public enum ObjectType
     {
         TorusSceneObject,
-        ComplexWireSceneObject
+        ComplexWireSceneObject,
+        EasyWireSceneObject
     }
     public ObjectType objectType;
     [SerializeField] private DataManager dataManager;
@@ -47,7 +48,6 @@ public class ReadText : MonoBehaviour
 
     private void Update()
     {
-
         if (isSDFenabled == true && dataManager.IsDataReaded == true)
         {
             //Debug.Log("sdf is enabled");
@@ -97,6 +97,11 @@ public class ReadText : MonoBehaviour
         {
             currentSDF = CalculateSDFWithReducedVertexDataComplexWire();
             maxSDF = dataManager.maxSDFWire;
+        }
+        else if(objectType == ObjectType.EasyWireSceneObject)
+        {
+            currentSDF = CalculateSDFWithReducedVertexDataEasyWire();
+            maxSDF = dataManager.MaxSDFeasyWire;
         }
 
         normalizedSDF();
@@ -151,6 +156,36 @@ public class ReadText : MonoBehaviour
         }
     }
 
+    private float CalculateSDFWithReducedVertexDataEasyWire()
+    {
+        float minSDF = Mathf.Infinity;
+        int minIndex = 999999;
+        minPos = Vector3.one * 999999;
+        foreach (Transform vertexTransform in vertexPositions.reducedNumVertexTransforms)
+        {
+            Vector3 convertedPos = ConvertPosition(vertexTransform.position);
+            int curIdx = System.Array.IndexOf(dataManager.EasyWirePositionArray, convertedPos);
+            float sdf = dataManager.EasyWireSDFArray[curIdx];
+            //Debug.Log(sdf);
+            if (sdf < minSDF)
+            {
+                minSDF = sdf;
+                minIndex = curIdx;
+                minPos = vertexTransform.position;
+                lastConvertedVertexPos = convertedPos;
+            }
+        }
+
+        if (minPos.x < -0.1f || minPos.x > 0.1f || minPos.y > 0.4f || minPos.y < -0.4f || minPos.z < -1f || minPos.z > 1f)
+        {
+            return 99;
+        }
+        else
+        {
+            return dataManager.EasyWireSDFArray[minIndex];
+        }
+    }
+
     private float CalculateSDFWithReducedVertexDataTorus()
     {
         float minSDF = Mathf.Infinity;
@@ -202,7 +237,7 @@ public class ReadText : MonoBehaviour
     {
         if(currentSDF == 99)
         {
-            if(objectType == ObjectType.ComplexWireSceneObject)
+            if(objectType == ObjectType.ComplexWireSceneObject || objectType == ObjectType.EasyWireSceneObject)
             {
                 float distane = Vector3.Distance(lastConvertedVertexPos, minPos);
                 float cSpeed = Mathf.Lerp(0.5f, maxSpeed, distane);
@@ -217,7 +252,7 @@ public class ReadText : MonoBehaviour
         }
 
         float divideMax = 4f;
-        if(objectType == ObjectType.ComplexWireSceneObject)
+        if(objectType == ObjectType.ComplexWireSceneObject || objectType == ObjectType.EasyWireSceneObject)
         {
             divideMax = 4f;
         }

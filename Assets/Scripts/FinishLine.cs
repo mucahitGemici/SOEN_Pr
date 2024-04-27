@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-public class PlacingObject : MonoBehaviour
+public class FinishLine : MonoBehaviour
 {
     public delegate void PlacingDelegate(float positionDifference, float angle);
     public event PlacingDelegate OnPlacingEnded;
@@ -10,6 +10,7 @@ public class PlacingObject : MonoBehaviour
     
     public XROffsetGrabInteractable xrOffsetGrabInteractable;
     public Torus torusRef;
+    [SerializeField] private PathManager pathManager;
     public Wire wireRef;
     public enum TaskType
     {
@@ -19,6 +20,9 @@ public class PlacingObject : MonoBehaviour
     }
     public TaskType taskType;
     [SerializeField] private int participantNumber;
+
+    [SerializeField] private AudioSource successSource;
+
     private void OnTriggerEnter(Collider other)
     {
         if(taskType == TaskType.Torus)
@@ -37,6 +41,7 @@ public class PlacingObject : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        /*
         if(xrOffsetGrabInteractable.isHolding == false)
         {
             //Debug.Log($"stop the placing! last position is: {xrOffsetGrabInteractable.transform.position}");
@@ -58,11 +63,34 @@ public class PlacingObject : MonoBehaviour
             
             this.gameObject.SetActive(false);
         }
+        */
+
+        if ((taskType == TaskType.Torus && pathManager.PathIsDone) || (taskType == TaskType.EasyWire) || (taskType == TaskType.ComplexWire))
+        {
+            //Debug.Log($"stop the placing! last position is: {xrOffsetGrabInteractable.transform.position}");
+            xrOffsetGrabInteractable.GetComponent<Rigidbody>().isKinematic = true;
+            float posDiff = Vector3.Distance(transform.position, xrOffsetGrabInteractable.transform.position);
+            float angleDiff = Quaternion.Angle(transform.rotation, xrOffsetGrabInteractable.transform.rotation);
+            Vector3 finalPos = xrOffsetGrabInteractable.transform.position;
+            Vector3 finalRot = xrOffsetGrabInteractable.transform.rotation.eulerAngles;
+            if (OnPlacingEnded != null) OnPlacingEnded(posDiff, angleDiff);
+
+            if (taskType == TaskType.Torus)
+            {
+                RecordData(xrOffsetGrabInteractable.GetTaskTimer, torusRef.GetHitNumber, posDiff, angleDiff, finalPos, finalRot);
+            }
+            else if (taskType == TaskType.ComplexWire || taskType == TaskType.EasyWire)
+            {
+                RecordData(xrOffsetGrabInteractable.GetTaskTimer, wireRef.GetHitNumber, posDiff, angleDiff, finalPos, finalRot);
+            }
+
+            this.gameObject.SetActive(false);
+        }
     }
 
     private void RecordData(float taskTime, int numHits, float positionDifference, float angleDifference, Vector3 finalPos, Vector3 finalRot)
     {
-        string data = $"{taskTime}\n{numHits}\n{positionDifference}\n{angleDifference}\n{finalPos.x}\n{finalPos.y}\n{finalPos.z}\n{finalRot.x}\n{finalRot.y}\n{finalRot.z}";
+        string data = $"participantNumber {participantNumber}\ntaskTime {taskTime}\nnumHits {numHits}\npositionDifference {positionDifference}\nangleDifference {angleDifference}\nfinalPosX {finalPos.x}\nfinalPosY {finalPos.y}\nfinalPosZ {finalPos.z}\nfinalRotX {finalRot.x}\nfinalRotY {finalRot.y}\nfinalRotZ {finalRot.z}";
 
         string path = "";
         if(taskType == TaskType.Torus)
@@ -86,6 +114,9 @@ public class PlacingObject : MonoBehaviour
         {
             File.WriteAllText(path, data);
         }
+
+        successSource.Play();
+        //Debug.Log("Data is recorded");
     }
 
 }

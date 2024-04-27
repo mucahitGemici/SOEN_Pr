@@ -13,7 +13,7 @@ public class Wire : MonoBehaviour
     }
 
     public AudioSource beepSource;
-    public PlacingObject placing;
+    public FinishLine placing;
     public AudioSource successSource;
 
     private void Awake()

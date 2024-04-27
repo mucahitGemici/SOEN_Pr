@@ -71,16 +71,28 @@ public class XROffsetGrabInteractable : XRGrabInteractable
         }
         */
 
+        /*
+        // Timer moved to another function (below)
         if(startTimer == false)
         {
             startTimer = true;
             timerStartSound.Play();
         }
+        */
         attachTransform.position = args.interactorObject.transform.position;
         attachTransform.rotation = args.interactorObject.transform.rotation;
         isHolding = true;
         HighlightObject();
         base.OnSelectEntered(args);
+    }
+
+    public void StartTimer()
+    {
+        if(startTimer == false)
+        {
+            startTimer = true;
+            timerStartSound.Play();
+        }
     }
 
     protected override void OnSelectExited(SelectExitEventArgs args)

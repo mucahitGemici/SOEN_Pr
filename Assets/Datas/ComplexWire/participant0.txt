@@ -1,10 +1,11 @@
-27,10908
-50
-0,1663133
-106,7333
--0,1105227
--0,2642104
-1,129044
-276,0194
-227,5106
-70,07576
+participantNumber 0
+taskTime 5.421424
+numHits 0
+positionDifference 0.1069627
+angleDifference 89.83771
+finalPosX -0.000118714
+finalPosY 0.124
+finalPosZ 1.01
+finalRotX 270.1713
+finalRotY 341.4973
+finalRotZ 18.50675

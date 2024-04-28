@@ -29,7 +29,7 @@ public class PathManager : MonoBehaviour
 
         placing.OnPlacingEnded += OnPlacingEnded;
 
-        Debug.Log(pathList.Count);
+        //Debug.Log(pathList.Count);
 
     }
 

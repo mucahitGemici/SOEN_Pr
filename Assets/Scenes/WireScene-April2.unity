@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028373, g: 0.22571428, b: 0.3069235, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028425, g: 0.2257151, b: 0.30692458, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -349,7 +349,7 @@ Transform:
   m_GameObject: {fileID: 328335830}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.02, z: 1.035}
+  m_LocalPosition: {x: 0, y: 0.02, z: 1.089}
   m_LocalScale: {x: 0.5, y: 0.85, z: 0.05}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -370,10 +370,14 @@ MonoBehaviour:
   xrOffsetGrabInteractable: {fileID: 8222982385016437860}
   torusRef: {fileID: 0}
   pathManager: {fileID: 0}
+  readText: {fileID: 8222982385016437862}
+  rb: {fileID: 8222982385016437863}
   wireRef: {fileID: 1114236185}
   taskType: 1
   participantNumber: 0
+  experimentNumber: 0
   successSource: {fileID: 1327974846}
+  recordData: 1
 --- !u!65 &328335833
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1600,14 +1604,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 516227592}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.22555447, z: -0, w: 0.97423065}
-  m_LocalPosition: {x: -1.76, y: -1.834, z: -3.462}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -1.76, y: -0.935, z: -0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 839165433}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 26.071, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &516227595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1643,7 +1647,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 516227592}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01f69dc1cb084aa42b2f2f8cd87bc770, type: 3}
   m_Name: 
@@ -3381,7 +3385,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &838161423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3557,10 +3561,14 @@ MonoBehaviour:
   xrOffsetGrabInteractable: {fileID: 8222982385016437860}
   torusRef: {fileID: 0}
   pathManager: {fileID: 0}
+  readText: {fileID: 0}
+  rb: {fileID: 0}
   wireRef: {fileID: 1114236185}
   taskType: 1
   participantNumber: 0
+  experimentNumber: 0
   successSource: {fileID: 0}
+  recordData: 0
 --- !u!65 &891707461
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4503,7 +4511,7 @@ Transform:
   m_GameObject: {fileID: 1258592465}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.97, z: 1.89}
+  m_LocalPosition: {x: 0, y: -0.97, z: 1.82}
   m_LocalScale: {x: 2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6894,7 +6902,7 @@ PrefabInstance:
     - target: {fileID: 3083213989177781831, guid: 62995d2a117a34133a909f3b73dad2cc,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.037
+      value: 1.091
       objectReference: {fileID: 0}
     - target: {fileID: 3083213989177781831, guid: 62995d2a117a34133a909f3b73dad2cc,
         type: 3}
@@ -7471,6 +7479,24 @@ MonoBehaviour:
 --- !u!4 &8222982385016437861 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2379843978684869542, guid: 384156a24a721fc4c99a7d7439647764,
+    type: 3}
+  m_PrefabInstance: {fileID: 8222982385016437859}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8222982385016437862 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 905455333862617975, guid: 384156a24a721fc4c99a7d7439647764,
+    type: 3}
+  m_PrefabInstance: {fileID: 8222982385016437859}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56566dd6ecc1efa44ae2d54064e666a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &8222982385016437863 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 4574320125369806638, guid: 384156a24a721fc4c99a7d7439647764,
     type: 3}
   m_PrefabInstance: {fileID: 8222982385016437859}
   m_PrefabAsset: {fileID: 0}

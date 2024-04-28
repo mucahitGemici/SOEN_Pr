@@ -1,0 +1,13 @@
+participantNumber 0
+experimentNumber 1
+sdfEnabled 1
+taskTime 20,85483
+numHits 10
+positionDifference 0,1551822
+angleDifference 120,2974
+finalPosX -0,07703798
+finalPosY -0,01822184
+finalPosZ 0,8952614
+finalRotX 293,2499
+finalRotY 182,9021
+finalRotZ 125,0892

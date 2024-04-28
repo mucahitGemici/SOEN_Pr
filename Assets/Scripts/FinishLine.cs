@@ -11,7 +11,14 @@ public class FinishLine : MonoBehaviour
     public XROffsetGrabInteractable xrOffsetGrabInteractable;
     public Torus torusRef;
     [SerializeField] private PathManager pathManager;
+    [SerializeField] private ReadText readText;
+    [SerializeField] private Rigidbody rb;
+    private string velocityMagnitudeString = "velocityMagnitude\n";
+    private string velocityComponentsString = "velocityComponents\n";
     public Wire wireRef;
+
+    [SerializeField] private MeshFilter torusMeshFilter;
+    [SerializeField] private MeshFilter objectMeshFilter;
     public enum TaskType
     {
         Torus,
@@ -20,9 +27,25 @@ public class FinishLine : MonoBehaviour
     }
     public TaskType taskType;
     [SerializeField] private int participantNumber;
+    [SerializeField] private int experimentNumber;
 
     [SerializeField] private AudioSource successSource;
 
+    [SerializeField] private bool recordData;
+
+    private bool canRecordSpeed = false;
+
+    private void FixedUpdate()
+    {
+        //Debug.Log($"Speed: {rb.velocity}");
+        if (xrOffsetGrabInteractable.StartTimerBoolean)
+        {
+            //Debug.Log($"velocity: {rb.velocity.magnitude}, components: x:{rb.velocity.x}, y:{rb.velocity.y}, z:{rb.velocity.z}");
+            //velocityString += $"{rb.velocity.x}\n{rb.velocity.y}\n{rb.velocity.z}\n";
+            velocityMagnitudeString += $"{rb.velocity.magnitude}\n";
+            velocityComponentsString += $"{rb.velocity.x}\n{rb.velocity.y}\n{rb.velocity.z}\n";
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         if(taskType == TaskType.Torus)
@@ -74,37 +97,46 @@ public class FinishLine : MonoBehaviour
             Vector3 finalPos = xrOffsetGrabInteractable.transform.position;
             Vector3 finalRot = xrOffsetGrabInteractable.transform.rotation.eulerAngles;
             if (OnPlacingEnded != null) OnPlacingEnded(posDiff, angleDiff);
+            xrOffsetGrabInteractable.StartTimerBoolean = false;
 
-            if (taskType == TaskType.Torus)
+            if (taskType == TaskType.Torus && recordData)
             {
                 RecordData(xrOffsetGrabInteractable.GetTaskTimer, torusRef.GetHitNumber, posDiff, angleDiff, finalPos, finalRot);
             }
-            else if (taskType == TaskType.ComplexWire || taskType == TaskType.EasyWire)
+            else if ((taskType == TaskType.ComplexWire || taskType == TaskType.EasyWire) && recordData)
             {
                 RecordData(xrOffsetGrabInteractable.GetTaskTimer, wireRef.GetHitNumber, posDiff, angleDiff, finalPos, finalRot);
             }
 
+            successSource.Play();
             this.gameObject.SetActive(false);
         }
     }
 
     private void RecordData(float taskTime, int numHits, float positionDifference, float angleDifference, Vector3 finalPos, Vector3 finalRot)
     {
-        string data = $"participantNumber {participantNumber}\ntaskTime {taskTime}\nnumHits {numHits}\npositionDifference {positionDifference}\nangleDifference {angleDifference}\nfinalPosX {finalPos.x}\nfinalPosY {finalPos.y}\nfinalPosZ {finalPos.z}\nfinalRotX {finalRot.x}\nfinalRotY {finalRot.y}\nfinalRotZ {finalRot.z}";
-
+        int sdfEnabled = 0;
+        if (readText.IsSdfEnabled)
+        {
+            sdfEnabled = 1;
+        }
+        string data = $"participantNumber\n{participantNumber}\nexperimentNumber\n{experimentNumber}\nsdfEnabled\n{sdfEnabled}\ntaskTime\n{taskTime}\nnumHits\n{numHits}\npositionDifference\n{positionDifference}\nangleDifference\n{angleDifference}\nfinalPosX\n{finalPos.x}\nfinalPosY\n{finalPos.y}\nfinalPosZ\n{finalPos.z}\nfinalRotX\n{finalRot.x}\nfinalRotY\n{finalRot.y}\nfinalRotZ\n{finalRot.z}\n";
+        data += velocityMagnitudeString;
+        data += velocityComponentsString;
         string path = "";
         if(taskType == TaskType.Torus)
         {
-            path = Application.dataPath + $"/Datas/Torus/participant{participantNumber}.txt";
+            path = Application.dataPath + $"/Datas/Torus/participant{participantNumber}_ex{experimentNumber}_sdf{sdfEnabled}.txt";
         }
         else if(taskType == TaskType.ComplexWire)
         {
-            path = Application.dataPath + $"/Datas/ComplexWire/participant{participantNumber}.txt";
+            path = Application.dataPath + $"/Datas/ComplexWire/participant{participantNumber}_ex{experimentNumber}_sdf{sdfEnabled}.txt";
         }
         else if(taskType == TaskType.EasyWire)
         {
-            path = Application.dataPath + $"/Datas/EasyWire/participant{participantNumber}.txt";
+            path = Application.dataPath + $"/Datas/EasyWire/participant{participantNumber}_ex{experimentNumber}_sdf{sdfEnabled}.txt";
         }
+        //
 
         if(!File.Exists(path))
         {
@@ -115,7 +147,7 @@ public class FinishLine : MonoBehaviour
             File.WriteAllText(path, data);
         }
 
-        successSource.Play();
+        
         //Debug.Log("Data is recorded");
     }
 

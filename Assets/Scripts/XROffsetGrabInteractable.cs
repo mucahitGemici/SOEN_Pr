@@ -26,6 +26,11 @@ public class XROffsetGrabInteractable : XRGrabInteractable
         get { return taskTimer; }
     }
     private bool startTimer;
+    public bool StartTimerBoolean
+    {
+        get { return startTimer; }
+        set { startTimer = value; }
+    }
     public AudioSource timerStartSound;
 
 

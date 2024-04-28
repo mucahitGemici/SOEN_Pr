@@ -32,6 +32,10 @@ public class ReadText : MonoBehaviour
     Vector3 minPos;
 
     private bool isSDFenabled = true;
+    public bool IsSdfEnabled
+    {
+        get { return isSDFenabled; }
+    }
     private void Start()
     {
 

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17729454, g: 0.22195512, b: 0.30419344, a: 1}
+  m_IndirectSpecularColor: {r: 0.177295, g: 0.2219556, b: 0.30419448, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2803,7 +2803,7 @@ Transform:
   m_GameObject: {fileID: 505644073}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.9, z: -1.299}
+  m_LocalPosition: {x: 0, y: -0.9, z: -1.221}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2860,7 +2860,7 @@ Transform:
   m_GameObject: {fileID: 516227592}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -1.554, y: -1.4, z: 0}
+  m_LocalPosition: {x: -1.5539999, y: -0.668, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2902,7 +2902,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 516227592}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01f69dc1cb084aa42b2f2f8cd87bc770, type: 3}
   m_Name: 
@@ -4604,7 +4604,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &838161423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4700,7 +4700,7 @@ Transform:
   m_GameObject: {fileID: 838161422}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -1.5539999, y: -1.4, z: 0}
+  m_LocalPosition: {x: -1.5539999, y: -0.668, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5310,10 +5310,14 @@ MonoBehaviour:
   xrOffsetGrabInteractable: {fileID: 2123282607}
   torusRef: {fileID: 1383930954}
   pathManager: {fileID: 0}
+  readText: {fileID: 0}
+  rb: {fileID: 0}
   wireRef: {fileID: 0}
   taskType: 0
   participantNumber: 0
+  experimentNumber: 0
   successSource: {fileID: 0}
+  recordData: 0
 --- !u!65 &1065123691
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10948,10 +10952,14 @@ MonoBehaviour:
   xrOffsetGrabInteractable: {fileID: 2123282607}
   torusRef: {fileID: 1383930954}
   pathManager: {fileID: 2010386973}
+  readText: {fileID: 2123282605}
+  rb: {fileID: 2123282606}
   wireRef: {fileID: 0}
   taskType: 0
   participantNumber: 0
+  experimentNumber: 0
   successSource: {fileID: 1643128769}
+  recordData: 1
 --- !u!65 &2103619131
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11170,9 +11178,9 @@ Transform:
   m_GameObject: {fileID: 2123282600}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.3356, z: 0.812}
-  m_LocalScale: {x: 0.11000001, y: 0.11000001, z: 0.11}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: -0.326, z: 0.812}
+  m_LocalScale: {x: 0.125, y: 0.125, z: 0.125}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1874916212}
   - {fileID: 406007769}

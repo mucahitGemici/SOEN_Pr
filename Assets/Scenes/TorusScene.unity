@@ -2915,7 +2915,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 516227592}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2213c36610e3b1c4bbf886810ed9db12, type: 3}
   m_Name: 
@@ -5313,6 +5313,8 @@ MonoBehaviour:
   readText: {fileID: 0}
   rb: {fileID: 0}
   wireRef: {fileID: 0}
+  torusMeshFilter: {fileID: 0}
+  objectMeshFilter: {fileID: 0}
   taskType: 0
   participantNumber: 0
   experimentNumber: 0
@@ -10955,6 +10957,8 @@ MonoBehaviour:
   readText: {fileID: 2123282605}
   rb: {fileID: 2123282606}
   wireRef: {fileID: 0}
+  torusMeshFilter: {fileID: 0}
+  objectMeshFilter: {fileID: 0}
   taskType: 0
   participantNumber: 0
   experimentNumber: 0

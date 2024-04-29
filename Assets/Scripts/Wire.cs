@@ -16,9 +16,17 @@ public class Wire : MonoBehaviour
     public FinishLine placing;
     public AudioSource successSource;
 
+    private float hitTimer;
+
     private void Awake()
     {
         placing.OnPlacingEnded += OnPlacingEnded;
+    }
+
+    private void Update()
+    {
+        hitTimer -= Time.deltaTime;
+
     }
 
     private void OnPlacingEnded(float positionDifference, float angle)
@@ -28,9 +36,10 @@ public class Wire : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == 6)
+        if (collision.gameObject.layer == 6 && hitTimer <= 0)
         {
             hitNum++;
+            hitTimer = 0.2f;
             //Debug.Log(collision.collider.gameObject.name);
             //Debug.Log(collision.gameObject.name);
             MeshRenderer mr = collision.collider.transform.parent.GetComponentsInChildren<MeshRenderer>()[1];

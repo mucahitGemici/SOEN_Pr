@@ -12,11 +12,19 @@ public class Torus : MonoBehaviour
         get { return hitNum; }
     }
     public AudioSource beepSource;
+
+    private float hitTimer;
+    private void Update()
+    {
+        hitTimer -= Time.deltaTime;
+
+    }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == 6)
+        if (collision.gameObject.layer == 6 && hitTimer <= 0f)
         {
             hitNum++;
+            hitTimer = 0.2f;
             //Debug.Log(collision.collider.gameObject.name);
             //Debug.Log(collision.gameObject.name);
             collision.gameObject.GetComponent<XROffsetGrabInteractable>().setHitColor(collision.collider.GetComponent<MeshRenderer>());
@@ -24,4 +32,5 @@ public class Torus : MonoBehaviour
             beepSource.Play();
         }
     }
+
 }

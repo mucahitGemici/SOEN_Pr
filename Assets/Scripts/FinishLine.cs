@@ -91,7 +91,7 @@ public class FinishLine : MonoBehaviour
         if ((taskType == TaskType.Torus && pathManager.PathIsDone) || (taskType == TaskType.EasyWire) || (taskType == TaskType.ComplexWire))
         {
             //Debug.Log($"stop the placing! last position is: {xrOffsetGrabInteractable.transform.position}");
-            xrOffsetGrabInteractable.GetComponent<Rigidbody>().isKinematic = true;
+            //xrOffsetGrabInteractable.GetComponent<Rigidbody>().isKinematic = true;
             float posDiff = Vector3.Distance(transform.position, xrOffsetGrabInteractable.transform.position);
             float angleDiff = Quaternion.Angle(transform.rotation, xrOffsetGrabInteractable.transform.rotation);
             Vector3 finalPos = xrOffsetGrabInteractable.transform.position;

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028373, g: 0.22571428, b: 0.3069235, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028425, g: 0.2257151, b: 0.30692458, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -746,7 +746,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &461948568
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -828,7 +828,7 @@ Transform:
   m_GameObject: {fileID: 461948567}
   serializedVersion: 2
   m_LocalRotation: {x: 0.57650393, y: -0.40944263, z: 0.40944263, w: 0.57650393}
-  m_LocalPosition: {x: 5.69, y: 0.43, z: -2.6}
+  m_LocalPosition: {x: 5.69, y: 2.2, z: -2.6}
   m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1765,7 +1765,7 @@ Transform:
   m_GameObject: {fileID: 532400710}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.049, z: 1.079}
+  m_LocalPosition: {x: 0, y: 0.049, z: 0.959}
   m_LocalScale: {x: 0.5, y: 0.83, z: 0.05}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1792,8 +1792,8 @@ MonoBehaviour:
   torusMeshFilter: {fileID: 0}
   objectMeshFilter: {fileID: 0}
   taskType: 2
-  participantNumber: 0
-  experimentNumber: 0
+  participantNumber: 3
+  repetitionNum: 1
   successSource: {fileID: 1247732684}
   recordData: 1
 --- !u!65 &532400713
@@ -3466,7 +3466,7 @@ MonoBehaviour:
   objectMeshFilter: {fileID: 0}
   taskType: 2
   participantNumber: 0
-  experimentNumber: 0
+  repetitionNum: 0
   successSource: {fileID: 0}
   recordData: 0
 --- !u!65 &891707461
@@ -6989,7 +6989,7 @@ PrefabInstance:
     - target: {fileID: 3083213989177781831, guid: 62995d2a117a34133a909f3b73dad2cc,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.0805
+      value: 0.933
       objectReference: {fileID: 0}
     - target: {fileID: 3083213989177781831, guid: 62995d2a117a34133a909f3b73dad2cc,
         type: 3}
@@ -7122,7 +7122,7 @@ PrefabInstance:
     - target: {fileID: 5245689241665534345, guid: bfe1e488ddee52241b12a272524b4982,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.46
+      value: 1.96
       objectReference: {fileID: 0}
     - target: {fileID: 5245689241665534345, guid: bfe1e488ddee52241b12a272524b4982,
         type: 3}

@@ -16,6 +16,9 @@ public class FinishLine : MonoBehaviour
     private string velocityMagnitudeString = "velocityMagnitude\n";
     private string velocityComponentsString = "velocityComponents\n";
     private string closestDistanceString = "closestDistance\n";
+    private string timeStamps = "timeStamps\n";
+    private string taskTypeString = "taskType\n";
+    private string taskTypeFilename;
     public Wire wireRef;
 
     [SerializeField] private MeshFilter torusMeshFilter;
@@ -28,7 +31,7 @@ public class FinishLine : MonoBehaviour
     }
     public TaskType taskType;
     [SerializeField] private int participantNumber;
-    [SerializeField] private int experimentNumber;
+    [SerializeField] private int repetitionNum;
 
     [SerializeField] private AudioSource successSource;
 
@@ -36,9 +39,27 @@ public class FinishLine : MonoBehaviour
 
     private bool canRecordSpeed = false;
 
-    private void FixedUpdate()
+    private void Start()
     {
-        //Debug.Log($"Speed: {rb.velocity}");
+        switch (taskType)
+        {
+            case TaskType.Torus:
+                taskTypeString += "torus\n";
+                taskTypeFilename = "torus";
+                break;
+            case TaskType.ComplexWire:
+                taskTypeString += "complexWire\n";
+                taskTypeFilename = "complexWire";
+                break;
+            case TaskType.EasyWire:
+                taskTypeString += "easyWire\n";
+                taskTypeFilename = "easyWire";
+                break;
+
+        }
+    }
+    private void Update()
+    {
         if (xrOffsetGrabInteractable.StartTimerBoolean)
         {
             //Debug.Log($"velocity: {rb.velocity.magnitude}, components: x:{rb.velocity.x}, y:{rb.velocity.y}, z:{rb.velocity.z}");
@@ -46,9 +67,10 @@ public class FinishLine : MonoBehaviour
             velocityMagnitudeString += $"{rb.velocity.magnitude}\n";
             velocityComponentsString += $"{rb.velocity.x}\n{rb.velocity.y}\n{rb.velocity.z}\n";
             closestDistanceString += $"{readText.ClosestDistance}\n";
-            
+            timeStamps += $"{Time.time}\n";
         }
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if(taskType == TaskType.Torus)
@@ -123,22 +145,24 @@ public class FinishLine : MonoBehaviour
         {
             sdfEnabled = 1;
         }
-        string data = $"participantNumber\n{participantNumber}\nexperimentNumber\n{experimentNumber}\nsdfEnabled\n{sdfEnabled}\ntaskTime\n{taskTime}\nnumHits\n{numHits}\npositionDifference\n{positionDifference}\nangleDifference\n{angleDifference}\nfinalPosX\n{finalPos.x}\nfinalPosY\n{finalPos.y}\nfinalPosZ\n{finalPos.z}\nfinalRotX\n{finalRot.x}\nfinalRotY\n{finalRot.y}\nfinalRotZ\n{finalRot.z}\n";
+        string data = $"participantNumber\n{participantNumber}\nrepetitionNum\n{repetitionNum}\nsdfEnabled\n{sdfEnabled}\ntaskTime\n{taskTime}\nnumHits\n{numHits}\npositionDifference\n{positionDifference}\nangleDifference\n{angleDifference}\nfinalPosX\n{finalPos.x}\nfinalPosY\n{finalPos.y}\nfinalPosZ\n{finalPos.z}\nfinalRotX\n{finalRot.x}\nfinalRotY\n{finalRot.y}\nfinalRotZ\n{finalRot.z}\n";
+        data += taskTypeString;
         data += velocityMagnitudeString;
         data += velocityComponentsString;
         data += closestDistanceString;
+        data += timeStamps;
         string path = "";
         if(taskType == TaskType.Torus)
         {
-            path = Application.dataPath + $"/Datas/Torus/participant{participantNumber}_ex{experimentNumber}_sdf{sdfEnabled}.txt";
+            path = Application.dataPath + $"/Datas/Torus/participant{participantNumber}_rep{repetitionNum}_sdf{sdfEnabled}_task{taskTypeFilename}.txt";
         }
         else if(taskType == TaskType.ComplexWire)
         {
-            path = Application.dataPath + $"/Datas/ComplexWire/participant{participantNumber}_ex{experimentNumber}_sdf{sdfEnabled}.txt";
+            path = Application.dataPath + $"/Datas/ComplexWire/participant{participantNumber}_rep{repetitionNum}_sdf{sdfEnabled}_task{taskTypeFilename}.txt";
         }
         else if(taskType == TaskType.EasyWire)
         {
-            path = Application.dataPath + $"/Datas/EasyWire/participant{participantNumber}_ex{experimentNumber}_sdf{sdfEnabled}.txt";
+            path = Application.dataPath + $"/Datas/EasyWire/participant{participantNumber}_rep{repetitionNum}_sdf{sdfEnabled}_task{taskTypeFilename}.txt";
         }
         //
 

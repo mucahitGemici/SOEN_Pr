@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17729454, g: 0.22195512, b: 0.30419344, a: 1}
+  m_IndirectSpecularColor: {r: 0.177295, g: 0.2219556, b: 0.30419448, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2075,7 +2075,7 @@ PrefabInstance:
     - target: {fileID: 3083213989177781831, guid: 62995d2a117a34133a909f3b73dad2cc,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.842
+      value: -0.782
       objectReference: {fileID: 0}
     - target: {fileID: 3083213989177781831, guid: 62995d2a117a34133a909f3b73dad2cc,
         type: 3}
@@ -5317,7 +5317,7 @@ MonoBehaviour:
   objectMeshFilter: {fileID: 0}
   taskType: 0
   participantNumber: 0
-  experimentNumber: 0
+  repetitionNum: 0
   successSource: {fileID: 0}
   recordData: 0
 --- !u!65 &1065123691
@@ -11016,7 +11016,7 @@ Transform:
   m_GameObject: {fileID: 2103619128}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.049, z: -0.835}
+  m_LocalPosition: {x: 0, y: 0.049, z: -0.814}
   m_LocalScale: {x: 0.5, y: 0.71, z: 0.05}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11043,8 +11043,8 @@ MonoBehaviour:
   torusMeshFilter: {fileID: 0}
   objectMeshFilter: {fileID: 0}
   taskType: 0
-  participantNumber: 0
-  experimentNumber: 0
+  participantNumber: 3
+  repetitionNum: 1
   successSource: {fileID: 1643128769}
   recordData: 1
 --- !u!65 &2103619131

@@ -15,6 +15,7 @@ public class FinishLine : MonoBehaviour
     [SerializeField] private Rigidbody rb;
     private string velocityMagnitudeString = "velocityMagnitude\n";
     private string velocityComponentsString = "velocityComponents\n";
+    private string closestDistanceString = "closestDistance\n";
     public Wire wireRef;
 
     [SerializeField] private MeshFilter torusMeshFilter;
@@ -44,6 +45,8 @@ public class FinishLine : MonoBehaviour
             //velocityString += $"{rb.velocity.x}\n{rb.velocity.y}\n{rb.velocity.z}\n";
             velocityMagnitudeString += $"{rb.velocity.magnitude}\n";
             velocityComponentsString += $"{rb.velocity.x}\n{rb.velocity.y}\n{rb.velocity.z}\n";
+            closestDistanceString += $"{readText.ClosestDistance}\n";
+            
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -123,6 +126,7 @@ public class FinishLine : MonoBehaviour
         string data = $"participantNumber\n{participantNumber}\nexperimentNumber\n{experimentNumber}\nsdfEnabled\n{sdfEnabled}\ntaskTime\n{taskTime}\nnumHits\n{numHits}\npositionDifference\n{positionDifference}\nangleDifference\n{angleDifference}\nfinalPosX\n{finalPos.x}\nfinalPosY\n{finalPos.y}\nfinalPosZ\n{finalPos.z}\nfinalRotX\n{finalRot.x}\nfinalRotY\n{finalRot.y}\nfinalRotZ\n{finalRot.z}\n";
         data += velocityMagnitudeString;
         data += velocityComponentsString;
+        data += closestDistanceString;
         string path = "";
         if(taskType == TaskType.Torus)
         {

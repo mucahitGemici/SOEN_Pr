@@ -31,11 +31,19 @@ public class ReadText : MonoBehaviour
     Vector3 lastConvertedVertexPos;
     Vector3 minPos;
 
-    private bool isSDFenabled = false;
+    private bool isSDFenabled = true;
     public bool IsSdfEnabled
     {
         get { return isSDFenabled; }
     }
+
+    public Transform testingObj;
+    private Vector3 closestPosition;
+    public float ClosestDistance
+    {
+        get { return Vector3.Distance(closestPosition, transform.position); }
+    }
+
     private void Start()
     {
 
@@ -60,6 +68,7 @@ public class ReadText : MonoBehaviour
             //speedText.text = $"SPEED: {movementSpeed}";
             //Debug.Log($"movementSpeed: {movementSpeed}");
             screenText.text = $"SDF = {currentSDF}";
+            testingObj.position = closestPosition;
         }
         else
         {
@@ -147,6 +156,7 @@ public class ReadText : MonoBehaviour
                 minIndex = curIdx;
                 minPos = vertexTransform.position;
                 lastConvertedVertexPos = convertedPos;
+                closestPosition = dataManager.WireClosestPositionArray[minIndex];
             }
         }
 
@@ -177,6 +187,7 @@ public class ReadText : MonoBehaviour
                 minIndex = curIdx;
                 minPos = vertexTransform.position;
                 lastConvertedVertexPos = convertedPos;
+                closestPosition = dataManager.EasyWireClosestPositionArray[minIndex];
             }
         }
 
@@ -207,6 +218,7 @@ public class ReadText : MonoBehaviour
                 minIndex = curIdx;
                 minPos = vertexTransform.position;
                 lastConvertedVertexPos = convertedPos;
+                closestPosition = dataManager.TorusClosestPositionArray[minIndex];
             }
         }
 

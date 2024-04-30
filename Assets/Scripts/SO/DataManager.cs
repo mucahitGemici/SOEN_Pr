@@ -7,12 +7,15 @@ public class DataManager : ScriptableObject
 {
     [SerializeField] private TextAsset wirePositionText;
     [SerializeField] private TextAsset wireSDFText;
+    [SerializeField] private TextAsset wireClosestPositionText;
 
     [SerializeField] private TextAsset easyWirePositionText;
     [SerializeField] private TextAsset easyWireSDFText;
+    [SerializeField] private TextAsset easyWireClosestPositionText;
 
     [SerializeField] private TextAsset torusPositionText;
     [SerializeField] private TextAsset torusSDFText;
+    [SerializeField] private TextAsset torusClosestPositionText;
 
     //[HideInInspector] public Vector3[] wirePositionArray = new Vector3[450241];
     [HideInInspector] public Vector3[] wirePositionArray = new Vector3[341901];
@@ -33,6 +36,24 @@ public class DataManager : ScriptableObject
     public float[] EasyWireSDFArray
     {
         get { return easyWireSDFArray; }
+    }
+
+    private Vector3[] torusClosestPositionArray = new Vector3[665091];
+    public Vector3[] TorusClosestPositionArray
+    {
+        get { return torusClosestPositionArray; }
+    }
+
+    private Vector3[] easyWireClosestPositionArray = new Vector3[341901];
+    public Vector3[] EasyWireClosestPositionArray
+    {
+        get { return easyWireClosestPositionArray; }
+    }
+
+    private Vector3[] wireClosestPositionArray = new Vector3[341901];
+    public Vector3[] WireClosestPositionArray
+    {
+        get { return wireClosestPositionArray; }
     }
 
     [HideInInspector] public float minSDFTorus;
@@ -56,7 +77,7 @@ public class DataManager : ScriptableObject
     {
         get
         {
-            if (wirePositionArray[1].magnitude != 0 && torusPositionArray[1].magnitude != 0)
+            if (wirePositionArray[1].magnitude != 0 && torusPositionArray[1].magnitude != 0 && torusClosestPositionArray[1].magnitude != 0)
             {
                 return true;
             }
@@ -77,6 +98,8 @@ public class DataManager : ScriptableObject
         torusSDFArray = new float[665091];
         easyWireSDFArray = new float[341901];
 
+        torusClosestPositionArray = new Vector3[665091];
+
         minSDFTorus = 0.0f;
         maxSDFTorus = 0.0f;
         minSDFWire = 0.0f;
@@ -91,6 +114,10 @@ public class DataManager : ScriptableObject
         ReadTorusPositionData();
         ReadTorusSDFData();
         ReadEasyWireSDFData();
+
+        ReadTorusClosestPositionData();
+        ReadWireClosestPositionData();
+        ReadEasyWireClosestPositionData();
     }
 
     private void ReadWirePositionData()
@@ -153,6 +180,70 @@ public class DataManager : ScriptableObject
                 pos /= 100;
             }
             torusPositionArray[i / 3] = pos;
+        }
+    }
+
+    private void ReadTorusClosestPositionData()
+    {
+        string[] dataLines = torusClosestPositionText.text.Split(',');
+
+        for (int i = 0; i <= dataLines.Length - 3; i += 3)
+        {
+            string stringX = dataLines[i];
+            string stringY = dataLines[i + 1];
+            string stringZ = dataLines[i + 2];
+
+
+            Vector3 pos = new Vector3(float.Parse(stringX), float.Parse(stringY), float.Parse(stringZ));
+            RuntimePlatform platform = Application.platform;
+            if (platform == RuntimePlatform.WindowsEditor || platform == RuntimePlatform.WindowsPlayer)
+            {
+                pos /= 100;
+            }
+            torusClosestPositionArray[i / 3] = pos;
+        }
+    }
+
+    private void ReadEasyWireClosestPositionData()
+    {
+        string[] dataLines = easyWireClosestPositionText.text.Split(',');
+
+        for (int i = 0; i <= dataLines.Length - 3; i += 3)
+        {
+            string stringX = dataLines[i];
+            string stringY = dataLines[i + 1];
+            string stringZ = dataLines[i + 2];
+
+
+            Vector3 pos = new Vector3(float.Parse(stringX), float.Parse(stringY), float.Parse(stringZ));
+            RuntimePlatform platform = Application.platform;
+            if (platform == RuntimePlatform.WindowsEditor || platform == RuntimePlatform.WindowsPlayer)
+            {
+                pos /= 100;
+            }
+            easyWireClosestPositionArray[i / 3] = pos;
+        }
+    }
+
+
+    private void ReadWireClosestPositionData()
+    {
+        string[] dataLines = wireClosestPositionText.text.Split(',');
+
+        for (int i = 0; i <= dataLines.Length - 3; i += 3)
+        {
+            string stringX = dataLines[i];
+            string stringY = dataLines[i + 1];
+            string stringZ = dataLines[i + 2];
+
+
+            Vector3 pos = new Vector3(float.Parse(stringX), float.Parse(stringY), float.Parse(stringZ));
+            RuntimePlatform platform = Application.platform;
+            if (platform == RuntimePlatform.WindowsEditor || platform == RuntimePlatform.WindowsPlayer)
+            {
+                pos /= 100;
+            }
+            wireClosestPositionArray[i / 3] = pos;
         }
     }
 

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17729454, g: 0.22195512, b: 0.30419344, a: 1}
+  m_IndirectSpecularColor: {r: 0.177295, g: 0.2219556, b: 0.30419448, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -11043,8 +11043,8 @@ MonoBehaviour:
   torusMeshFilter: {fileID: 0}
   objectMeshFilter: {fileID: 0}
   taskType: 0
-  participantNumber: 3
-  repetitionNum: 1
+  participantNumber: 4
+  repetitionNum: 5
   successSource: {fileID: 1643128769}
   recordData: 1
 --- !u!65 &2103619131

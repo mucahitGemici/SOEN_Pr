@@ -39,6 +39,40 @@ public class FinishLine : MonoBehaviour
 
     private bool canRecordSpeed = false;
 
+    public struct NewDataLine
+    {
+        public string participantNumber;
+        public string task;
+        public string sdfState;
+        public string repetition;
+        public string timeStamp;
+        public string numHits;
+        public string timeToCompleteTask;
+        public string instanteneousVelocityMag;
+        public string instanteneousVelocityX;
+        public string instanteneousVelocityY;
+        public string instanteneousVelocityZ;
+        public string closestDistance;
+
+        public NewDataLine(string ParticipantNumber, string Task, string SdfState,string Repetition, string TimeStamp, string NumHits, string TimeToCompleteTask,
+            string InstanteneousVelocityMag, string InstanteneousVelocityX, string InstanteneousVelocityY, string InstanteneousVelocityZ, string ClosestDistance)
+        {
+            this.participantNumber = ParticipantNumber;
+            this.task = Task;
+            this.sdfState = SdfState;
+            this.repetition = Repetition;
+            this.timeStamp = TimeStamp;
+            this.numHits = NumHits;
+            this.timeToCompleteTask = TimeToCompleteTask;
+            this.instanteneousVelocityMag = InstanteneousVelocityMag;
+            this.instanteneousVelocityX = InstanteneousVelocityX;
+            this.instanteneousVelocityY = InstanteneousVelocityY;
+            this.instanteneousVelocityZ = InstanteneousVelocityZ;
+            this.closestDistance = ClosestDistance;
+        }
+    }
+    private List<NewDataLine> newDataLinesList = new List<NewDataLine>();
+
     private void Start()
     {
         switch (taskType)
@@ -57,6 +91,12 @@ public class FinishLine : MonoBehaviour
                 break;
 
         }
+
+        NewDataLine firstLine = new NewDataLine(ParticipantNumber: "ParticipantNumber", Task: "Task", SdfState: "SdfState", Repetition: "Repetition", TimeStamp: "TimeStamp",
+            NumHits: "NumHits", TimeToCompleteTask: "TimeToCompleteTask", InstanteneousVelocityMag: "InstanteneousVelocityMag", InstanteneousVelocityX: "InstanteneousVelocityX",
+            InstanteneousVelocityY: "InstanteneousVelocityY", InstanteneousVelocityZ: "InstanteneousVelocityZ", ClosestDistance: "ClosestDistance");
+        newDataLinesList.Add(firstLine);
+
     }
     private void Update()
     {
@@ -68,6 +108,11 @@ public class FinishLine : MonoBehaviour
             velocityComponentsString += $"{rb.velocity.x}\n{rb.velocity.y}\n{rb.velocity.z}\n";
             closestDistanceString += $"{readText.ClosestDistance}\n";
             timeStamps += $"{Time.time}\n";
+
+            NewDataLine newLine = new NewDataLine(ParticipantNumber: "-", Task: $"{taskTypeFilename}", SdfState: "-", Repetition: "-", TimeStamp: $"{Time.time}",
+            NumHits: "-", TimeToCompleteTask: "-", InstanteneousVelocityMag: $"{rb.velocity.magnitude}", InstanteneousVelocityX: $"{rb.velocity.x}",
+            InstanteneousVelocityY: $"{rb.velocity.y}", InstanteneousVelocityZ: $"{rb.velocity.z}", ClosestDistance: $"{readText.ClosestDistance}");
+            newDataLinesList.Add(newLine);
         }
     }
 
@@ -146,33 +191,62 @@ public class FinishLine : MonoBehaviour
             sdfEnabled = 1;
         }
         string data = $"participantNumber\n{participantNumber}\nrepetitionNum\n{repetitionNum}\nsdfEnabled\n{sdfEnabled}\ntaskTime\n{taskTime}\nnumHits\n{numHits}\npositionDifference\n{positionDifference}\nangleDifference\n{angleDifference}\nfinalPosX\n{finalPos.x}\nfinalPosY\n{finalPos.y}\nfinalPosZ\n{finalPos.z}\nfinalRotX\n{finalRot.x}\nfinalRotY\n{finalRot.y}\nfinalRotZ\n{finalRot.z}\n";
+
+        for(int i = 1; i < newDataLinesList.Count; i++)
+        {
+            // for the new data format
+            NewDataLine line = newDataLinesList[i];
+            line.participantNumber = $"{participantNumber}";
+            line.sdfState = $"{sdfEnabled}";
+            line.repetition = $"{repetitionNum}";
+            line.numHits = $"{numHits}";
+            line.timeToCompleteTask = $"{taskTime}";
+            newDataLinesList[i] = line;
+        }
+
         data += taskTypeString;
         data += velocityMagnitudeString;
         data += velocityComponentsString;
         data += closestDistanceString;
         data += timeStamps;
         string path = "";
+        string newDataFormatPath = "";
         if(taskType == TaskType.Torus)
         {
             path = Application.dataPath + $"/Datas/Torus/participant{participantNumber}_rep{repetitionNum}_sdf{sdfEnabled}_task{taskTypeFilename}.txt";
+            newDataFormatPath = Application.dataPath + $"/Datas/Torus/participant{participantNumber}_rep{repetitionNum}_sdf{sdfEnabled}_task{taskTypeFilename}_NewFormat.txt";
         }
         else if(taskType == TaskType.ComplexWire)
         {
             path = Application.dataPath + $"/Datas/ComplexWire/participant{participantNumber}_rep{repetitionNum}_sdf{sdfEnabled}_task{taskTypeFilename}.txt";
+            newDataFormatPath = Application.dataPath + $"/Datas/ComplexWire/participant{participantNumber}_rep{repetitionNum}_sdf{sdfEnabled}_task{taskTypeFilename}_NewFormat.txt";
         }
         else if(taskType == TaskType.EasyWire)
         {
             path = Application.dataPath + $"/Datas/EasyWire/participant{participantNumber}_rep{repetitionNum}_sdf{sdfEnabled}_task{taskTypeFilename}.txt";
+            newDataFormatPath = Application.dataPath + $"/Datas/EasyWire/participant{participantNumber}_rep{repetitionNum}_sdf{sdfEnabled}_task{taskTypeFilename}_NewFormat.txt";
         }
         //
 
         if(!File.Exists(path))
         {
             File.WriteAllText(path, data);
+            StreamWriter writer = new StreamWriter(newDataFormatPath, true);
+            foreach(NewDataLine dataLine in newDataLinesList)
+            {
+                writer.WriteLine($"{dataLine.participantNumber};{dataLine.task};{dataLine.sdfState};{dataLine.repetition};{dataLine.timeStamp};{dataLine.numHits};{dataLine.timeToCompleteTask};{dataLine.instanteneousVelocityMag};{dataLine.instanteneousVelocityX};{dataLine.instanteneousVelocityY};{dataLine.instanteneousVelocityZ};{dataLine.closestDistance}");
+            }
+            writer.Close();
         }
         else
         {
             File.WriteAllText(path, data);
+            StreamWriter writer = new StreamWriter(newDataFormatPath, true);
+            foreach (NewDataLine dataLine in newDataLinesList)
+            {
+                writer.WriteLine($"{dataLine.participantNumber};{dataLine.task};{dataLine.sdfState};{dataLine.repetition};{dataLine.timeStamp};{dataLine.numHits};{dataLine.timeToCompleteTask};{dataLine.instanteneousVelocityMag};{dataLine.instanteneousVelocityX};{dataLine.instanteneousVelocityY};{dataLine.instanteneousVelocityZ};{dataLine.closestDistance}");
+            }
+            writer.Close();
         }
 
         

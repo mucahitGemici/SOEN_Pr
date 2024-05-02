@@ -31,7 +31,7 @@ public class ReadText : MonoBehaviour
     Vector3 lastConvertedVertexPos;
     Vector3 minPos;
 
-    private bool isSDFenabled = false;
+    private bool isSDFenabled = true;
     public bool IsSdfEnabled
     {
         get { return isSDFenabled; }
@@ -209,6 +209,7 @@ public class ReadText : MonoBehaviour
         foreach (Transform vertexTransform in vertexPositions.reducedNumVertexTransforms)
         {
             Vector3 convertedPos = ConvertPosition(vertexTransform.position);
+            Debug.Log($"convertedPos: {convertedPos}");
             int curIdx = System.Array.IndexOf(dataManager.torusPositionArray, convertedPos);
             float sdf = dataManager.torusSDFArray[curIdx];
             //Debug.Log(sdf);

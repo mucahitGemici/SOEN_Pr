@@ -1793,7 +1793,7 @@ MonoBehaviour:
   objectMeshFilter: {fileID: 0}
   taskType: 2
   participantNumber: 6
-  repetitionNum: 1
+  repetitionNum: 5
   successSource: {fileID: 1247732684}
   recordData: 1
 --- !u!65 &532400713

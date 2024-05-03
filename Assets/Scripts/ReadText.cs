@@ -31,7 +31,7 @@ public class ReadText : MonoBehaviour
     Vector3 lastConvertedVertexPos;
     Vector3 minPos;
 
-    private bool isSDFenabled = false;
+    private bool isSDFenabled = true;
     public bool IsSdfEnabled
     {
         get { return isSDFenabled; }

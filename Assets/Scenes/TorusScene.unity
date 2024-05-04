@@ -11043,8 +11043,8 @@ MonoBehaviour:
   torusMeshFilter: {fileID: 0}
   objectMeshFilter: {fileID: 0}
   taskType: 0
-  participantNumber: 13
-  repetitionNum: 5
+  participantNumber: 16
+  repetitionNum: 1
   successSource: {fileID: 1643128769}
   recordData: 1
 --- !u!65 &2103619131
